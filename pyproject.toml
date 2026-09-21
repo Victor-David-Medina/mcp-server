@@ -1,0 +1,12 @@
+[project]
+name = "skill-proof-mcp"
+version = "1.0.0"
+description = "Portfolio proof project: a working MCP server with three small tools."
+requires-python = ">=3.10"
+dependencies = ["mcp>=1.9,<2"]
+
+[project.scripts]
+skill-proof-mcp = "server:main"
+
+[tool.mypy]
+strict = false

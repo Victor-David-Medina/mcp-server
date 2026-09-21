@@ -34,18 +34,18 @@ below works with any MCP host via stdio, no custom integration code needed.
 Each tool isolates one common pattern in AI tooling, and each is honest
 about its limits:
 
-1. **`readability_analyze`** — Pure function, no I/O. Shows schema-first tool
+1. **`readability_analyze`**: Pure function, no I/O. Shows schema-first tool
    design: typed JSON input, structured JSON output. Flesch Reading Ease and
    Flesch-Kincaid grade use a heuristic syllable counter, which is good
    enough for scoring prose but not for linguistics research.
 
-2. **`fetch_url`** — Network I/O with clear boundaries. Only `http(s)`,
+2. **`fetch_url`**: Network I/O with clear boundaries. Only `http(s)`,
    15s timeout, 1MB cap, HTML only. It strips scripts/styles and returns
    title plus plain-text excerpt. It does *not* execute JavaScript; a page
    that needs a browser would come back thin, and that tradeoff is stated
    in the tool description the model sees.
 
-3. **`notes_store`** — Persistent state with a single action-dispatched tool
+3. **`notes_store`**: Persistent state with a single action-dispatched tool
    (`save`/`get`/`list`/`delete`, JSON file on disk). MCP servers are
    stateless by default, so state has to be an explicit design choice. Here
    a flat file is the right call: the data is tiny, single-user, and needs

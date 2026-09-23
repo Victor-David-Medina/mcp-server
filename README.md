@@ -24,7 +24,7 @@ The mechanics, in short:
 ```
 
 Why I used it here: the value of MCP is *separation*. The host handles model
-reasoning and UI; the server owns tool execution, auth, and state. A server
+reasoning and UI; the server owns tool execution and auth state. A server
 written once plugs into any compliant host without host-side changes. That
 decoupling is the whole point, and this project demonstrates it: the server
 below works with any MCP host via stdio, no custom integration code needed.
@@ -48,7 +48,7 @@ about its limits:
 3. **`notes_store`**: Persistent state with a single action-dispatched tool
    (`save`/`get`/`list`/`delete`, JSON file on disk). MCP servers are
    stateless by default, so state has to be an explicit design choice. Here
-   a flat file is the right call: the data is tiny, single-user, and needs
+   a flat file is the right call: the data is tiny and single-user, and it needs
    to survive restarts without a database.
 
 ## Files

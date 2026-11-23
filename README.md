@@ -4,6 +4,13 @@ A working Model Context Protocol server with three small tools. This is a
 **skills proof**, not a production deployment: it exists to show I can design,
 implement, and test a real MCP server end to end.
 
+**Results:** 3 tools, one per common MCP pattern · 17 end-to-end protocol
+checks passing (`test_server.py`: real `initialize`, `tools/list`, and
+`tools/call` round-trips, no protocol shortcuts) · runs over stdio with any
+MCP host · no API keys.
+
+**Status:** complete, maintained best-effort.
+
 ## Why MCP
 
 Before MCP, every AI host needed bespoke glue code to reach outside tools.
@@ -51,6 +58,14 @@ about its limits:
    a flat file is the right call: the data is tiny and single-user, and it needs
    to survive restarts without a database.
 
+## Tools at a glance
+
+| Tool | Pattern | Inputs | Outputs | Stated limits |
+|---|---|---|---|---|
+| `readability_analyze` | Pure function, no I/O | `text` (string, required) | JSON: text counts plus readability scores (Flesch Reading Ease, Flesch-Kincaid grade) | Heuristic syllable counter; prose scoring, not linguistics research |
+| `fetch_url` | Network I/O with boundaries | `url` (string, required), `max_chars` (integer, default 4000) | JSON: url, title, char count, plain-text excerpt | http(s) only, 15s timeout, 1MB cap, HTML only, no JavaScript execution |
+| `notes_store` | Explicit persistent state | `action` (save / get / list / delete, required), `key`, `value` | JSON: the stored note(s) or the action result | Flat JSON file on disk; single-user by design |
+
 ## Files
 
 | File | What it is |
@@ -79,10 +94,25 @@ spawns the server as a subprocess and talks JSON-RPC over its stdin/stdout:
 No API keys, no network config, no services to run. The server announces its
 three tools on `initialize`; the host never needs code changes to use them.
 
+Paste-and-run version, using the installed console script (after
+`pip install -e .` from the "Run it" section below; if your host does not
+inherit the venv's PATH, use the venv's full path to `skill-proof-mcp`):
+
+```json
+{
+  "mcpServers": {
+    "skill-proof": {
+      "command": "skill-proof-mcp",
+      "args": []
+    }
+  }
+}
+```
+
 ## Run it
 
 ```bash
-cd skill-proof/mcp-server
+cd mcp-server
 python3 -m venv .venv
 .venv/bin/pip install -e .
 .venv/bin/python test_server.py   # runs the full protocol test suite

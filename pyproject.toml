@@ -8,5 +8,8 @@ dependencies = ["mcp>=1.9,<2"]
 [project.scripts]
 skill-proof-mcp = "server:main"
 
+[tool.setuptools]
+py-modules = ["server"]
+
 [tool.mypy]
 strict = false
